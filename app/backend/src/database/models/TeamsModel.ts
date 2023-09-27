@@ -7,7 +7,8 @@ import {
 } from 'sequelize';
 import db from '.';
 
-class TeamsModel extends Model<InferAttributes<TeamsModel>, InferCreationAttributes<TeamsModel>> {
+export default class TeamsModel extends
+  Model<InferAttributes<TeamsModel>, InferCreationAttributes<TeamsModel>> {
   declare id: CreationOptional<number>;
   declare teamName: string;
 }
