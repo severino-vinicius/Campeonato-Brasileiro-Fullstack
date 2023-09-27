@@ -3,7 +3,7 @@ FROM node:16.14-alpine
 # Mudar para o diretório de trabalho /app-backend
 WORKDIR /app-backend
 # Copiar os package.json, package-lock.json e packages.npm para o container
-COPY package*.json ./
+COPY package*. ./
 # Instalar as dependências Node
 # RUN - Roda em quanto ta constuindo o container;
 # CMD - Primeiro comando que roda quando container ta Up;
