@@ -6,7 +6,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 import TeamsModelSequelize from '../database/models/TeamsModelSequelize';
-import { teamsAllMock } from './mocks/Teams.mocks';
+import { teamsAllMock, teamMock } from './mocks/Teams.mocks';
 
 chai.use(chaiHttp);
 
@@ -24,6 +24,34 @@ describe('Testes da Rota Teams', function() {
     const { status, body } = await chai.request(app).get('/teams');
 
     expect(status).to.equal(200);
+    expect(body).to.deep.equal([
+      {
+        id: 1,
+        teamName: 'Avaí/Kindermann'
+      },
+      {
+        id: 2,
+        teamName: 'Bahia'
+      },
+      {
+        id: 3,
+        teamName: 'Botafogo'
+      }
+    ])
   });
+
+  it('Endpoint /teams/:id retorna o time do Id informado', async function() {
+    sinon.stub(TeamsModelSequelize, 'findByPk').resolves(teamMock as any)
+    
+    const { status, body } = await chai.request(app).get('/teams/1');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(
+      {
+        id: 1,
+        teamName: 'Avaí/Kindermann'
+      },
+    )
+  })
 
 });
