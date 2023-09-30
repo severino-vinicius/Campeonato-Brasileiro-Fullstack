@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 import UsersModelSequelize from '../database/models/UsersModelSequelize'
-import { userTokenMock } from './mocks/User.mocks';
+import { validAdminUser } from './mocks/User.mocks';
 
 chai.use(chaiHttp);
 
@@ -17,11 +17,10 @@ describe('Testes da Rota Login', function() {
     sinon.restore()
   })
 
-  it('Endpoint /login retorna todos os times corretamente', async function() {
-    sinon.stub(UsersModelSequelize, 'findAll').resolves(userTokenMock as any)
-
-    const { status, body } = await chai.request(app).get('/login');
-
+  it('Endpoint /login retorna o Token caso email e senha estejam corretos', async function() {
+    const loginData = { "email": "admin@admin.com", "password": "secret_admin" };
+    sinon.stub(UsersModelSequelize, 'findOne').resolves(validAdminUser as any)
+    const { status, body } = await chai.request(app).post('/login').send(loginData);
     expect(status).to.equal(200);
   });
 
