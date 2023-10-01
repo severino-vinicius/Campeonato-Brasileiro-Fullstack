@@ -22,6 +22,7 @@ describe('Testes da Rota Login', function() {
     sinon.stub(UsersModelSequelize, 'findOne').resolves(validAdminUser as any)
     const { status, body } = await chai.request(app).post('/login').send(loginData);
     expect(status).to.equal(200);
+    expect(body).to.have.key('token');
   });
 
 });
