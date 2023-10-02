@@ -14,4 +14,9 @@ export default class UserController {
 
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
+
+  public static role(req: Request, res: Response) {
+    const { role } = res.locals.user;
+    return res.status(200).json({ role });
+  }
 }
