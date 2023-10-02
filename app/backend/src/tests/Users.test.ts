@@ -24,8 +24,22 @@ describe('Testes da Rota Login', function() {
     expect(status).to.equal(400);
   });
 
-  it('Endpoint /login retorna mensagem de erro caso email ou senha estejam errados', async function() {
+  it('Retorna mensagem de erro caso email ou senha não exista no banco', async function() {
     const loginData = { "email": "admin@admin.com", "password": "secret_adminnn" };
+    sinon.stub(UsersModelSequelize, 'findOne').resolves(validAdminUser as any)
+    const { status, body } = await chai.request(app).post('/login').send(loginData);
+    expect(status).to.equal(401);
+  });
+
+  it('Retorna mensagem de erro caso email seja invalido', async function() {
+    const loginData = { "email": "@admin.com", "password": "secret_adminnn" };
+    sinon.stub(UsersModelSequelize, 'findOne').resolves(validAdminUser as any)
+    const { status, body } = await chai.request(app).post('/login').send(loginData);
+    expect(status).to.equal(401);
+  });
+
+  it('Retorna mensagem de erro caso senha seja invalida', async function() {
+    const loginData = { "email": "admin@admin.com", "password": "secre" };
     sinon.stub(UsersModelSequelize, 'findOne').resolves(validAdminUser as any)
     const { status, body } = await chai.request(app).post('/login').send(loginData);
     expect(status).to.equal(401);

@@ -10,7 +10,7 @@ export default class UserService {
   ) {}
 
   public async login(email: string, password: string): Promise<ServiceResponse<{ token: string }>> {
-    const invalidMessage = 'E-mail ou senha incorretos';
+    const invalidMessage = 'Invalid email or password';
     const user = await this.userModel.findByEmail(email);
 
     if (!user) return { status: 'UNAUTHORIZED', data: { message: invalidMessage } };
