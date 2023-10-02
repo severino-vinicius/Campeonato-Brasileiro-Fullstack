@@ -40,6 +40,14 @@ describe('Testes da Rota Teams', function() {
     ])
   });
 
+  it('Endpoint /teams/:id não retorna o time do Id informado', async function() {
+    sinon.stub(TeamsModelSequelize, 'findByPk').resolves(null as any)
+    
+    const { status, body } = await chai.request(app).get('/teams/1');
+
+    expect(status).to.equal(404);
+  })
+
   it('Endpoint /teams/:id retorna o time do Id informado', async function() {
     sinon.stub(TeamsModelSequelize, 'findByPk').resolves(teamMock as any)
     
