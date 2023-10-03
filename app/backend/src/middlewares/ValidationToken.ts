@@ -6,18 +6,16 @@ export default class TokenValidation {
     const { authorization } = req.headers;
     const jwtSecret: string = process.env.JWT_SECRET || '';
 
+    if (!authorization) {
+      return res.status(401).json({ message: 'Token not found' });
+    }
     try {
-      if (!authorization) {
-        return res.status(401).json({ message: 'Token not found' });
-      }
       const [, token] = authorization.split(' ');
       const validToken = jwt.verify(token, jwtSecret);
       res.locals.user = validToken;
-      next();
     } catch (err) {
-      res.status(401).json({ message: 'Token must be a valid token' });
+      return res.status(401).json({ message: 'Token must be a valid token' });
     }
-
     next();
   };
 }
