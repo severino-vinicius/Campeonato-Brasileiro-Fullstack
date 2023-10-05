@@ -8,7 +8,7 @@ export default class MatchesController {
   ) {}
 
   public async getAllMatches(req: Request, res: Response) {
-    const serviceResponse = await this.matchesService.getAllMatches();
+    const serviceResponse = await this.matchesService.getAllMatches(req);
 
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
