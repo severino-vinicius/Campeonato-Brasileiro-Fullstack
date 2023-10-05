@@ -12,4 +12,11 @@ export default class MatchesController {
 
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
+
+  public async endMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const serviceResponse = await this.matchesService.endMatch(Number(id));
+
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  }
 }

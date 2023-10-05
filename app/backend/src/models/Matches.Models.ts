@@ -29,4 +29,17 @@ export default class MatchesModel implements IMatchesModel {
     });
     return dbdata;
   }
+
+  async findById(id: number): Promise<IMatche | null> {
+    const dbdata = await this.model.findByPk(id);
+    if (!dbdata) return null;
+    return dbdata;
+  }
+
+  async endMatch(id: number): Promise<IMatche | null> {
+    const [affectedRows] = await this.model.update({ inProgress: false }, { where: { id } });
+    if (affectedRows === 0) return null;
+
+    return this.findById(id);
+  }
 }
