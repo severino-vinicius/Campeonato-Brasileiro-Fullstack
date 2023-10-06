@@ -51,15 +51,15 @@ export default class MatchesService {
 
   public async createMatch(dataToCreate: dataToCreateType):
   Promise<ServiceResponse<IMatche | null>> {
-    // const { homeTeamId, awayTeamId } = dataToCreate;
+    const { homeTeamId, awayTeamId } = dataToCreate;
 
-    // const validateTeamHome = await this.teamModel.findById(Number(homeTeamId));
-    // const validateTeamAway = await this.teamModel.findById(Number(awayTeamId));
+    const validateTeamHome = await this.teamModel.findById(Number(homeTeamId));
+    const validateTeamAway = await this.teamModel.findById(Number(awayTeamId));
 
-    // if (!validateTeamHome || !validateTeamAway) {
-    //   return { status: 'NOT_FOUND',
-    //     data: { message: `Team ${homeTeamId} or ${awayTeamId} not found` } };
-    // }
+    if (!validateTeamHome || !validateTeamAway) {
+      return { status: 'NOT_FOUND',
+        data: { message: 'There is no team with such id!' } };
+    }
 
     const createdMatch = await this.matchesModel.createMatch(dataToCreate);
 
