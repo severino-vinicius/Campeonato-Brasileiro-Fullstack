@@ -28,11 +28,8 @@ export default class MatchesService {
     const foundMatche = await this.matchesModel.findById(id);
     if (!foundMatche) return { status: 'NOT_FOUND', data: { message: `Matche ${id} not found` } };
 
-    const finishMatch = await this.matchesModel.endMatch(id);
-    if (!finishMatch) {
-      return { status: 'CONFLICT',
-        data: { message: `This matche ${id} is already finished!` } };
-    }
+    await this.matchesModel.endMatch(id);
+
     return { status: 'SUCCESS', data: { message: 'Finished' } };
   }
 

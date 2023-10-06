@@ -59,6 +59,21 @@ const inProgressMatcheById = {
   }
 }
 
+const matchUpdated = {
+  id: 43,
+  homeTeamId: 11,
+  homeTeamGoals: 0,
+  awayTeamId: 10,
+  awayTeamGoals: 3,
+  inProgress: true,
+  homeTeam: {
+    teamName: 'Napoli-SC'
+  },
+  awayTeam: {
+    teamName: 'Minas Brasília'
+  }
+}
+
 const matchUpdatedMock = {
   id: 43,
   homeTeamId: 11,
@@ -117,4 +132,5 @@ export {
   inProgressMatches,
   inProgressMatcheById,
   matchUpdatedMock,
+  matchUpdated,
 };

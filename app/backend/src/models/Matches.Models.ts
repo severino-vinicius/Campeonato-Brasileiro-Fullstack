@@ -42,8 +42,7 @@ export default class MatchesModel implements IMatchesModel {
   }
 
   async endMatch(id: number): Promise<IMatche | null> {
-    const [affectedRows] = await this.model.update({ inProgress: false }, { where: { id } });
-    if (affectedRows === 0) return null;
+    await this.model.update({ inProgress: false }, { where: { id } });
 
     return this.findById(id);
   }
