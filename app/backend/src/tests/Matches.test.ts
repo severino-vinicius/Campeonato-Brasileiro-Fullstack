@@ -98,4 +98,23 @@ describe('Testes da Rota Matches', function() {
     expect(body).to.be.deep.equal({ message: `This matche ${id} is already finished!` })
   })
 
+  it('Metodo Patch: retorna placar atualizado após enviar dados para aualiza-lo', async function() {
+    const tokenValid = { id: 2, role: 'user', iat: 1696190082, exp: 1697054082 }
+    const id = 1;
+
+    sinon.stub(jwt, 'verify').callsFake(() => tokenValid)
+    sinon.stub(MatchesModelSequelize, 'update').resolves([1])
+    // sinon.stub(MatchesModelSequelize, 'findByPk').resolves(inProgressMatcheById as any)
+
+
+    const { status, body } = await chai.request(app)
+    .patch(`/matches/${id}`)
+    .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk2MjczOTczLCJleHAiOjE2OTY4Nzg3NzN9.MYAZonXCSs6z4adGJMNmlKgyMyjxspCVXVSFfnWnm9I')
+    .send({
+      "homeTeamGoals": 0,
+      "awayTeamGoals": 3
+    });
+    expect(status).to.equal(200);
+  })
+
 });
