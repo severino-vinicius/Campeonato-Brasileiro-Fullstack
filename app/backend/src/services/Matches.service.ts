@@ -1,12 +1,18 @@
 import { Request } from 'express';
 import { ServiceMessage, ServiceResponse } from '../Interfaces/ServiceResponse';
-import { IMatchesModel, dataToUpdateType } from '../Interfaces/Matches/IMatchesModel';
+import {
+  IMatchesModel,
+  dataToCreateType,
+  dataToUpdateType } from '../Interfaces/Matches/IMatchesModel';
 import IMatche from '../Interfaces/Matches/Matche';
 import MatchesModel from '../models/Matches.Models';
+import { IteamsModel } from '../Interfaces/Teams/ITeamsModel';
+import TeamsModel from '../models/Teams.Model';
 
 export default class MatchesService {
   constructor(
     private matchesModel: IMatchesModel = new MatchesModel(),
+    private teamModel: IteamsModel = new TeamsModel(),
   ) {}
 
   public async getAllMatches(req: Request): Promise<ServiceResponse<IMatche[] | null>> {
@@ -41,5 +47,22 @@ export default class MatchesService {
     const updatedMatch = await this.matchesModel.updateMatch(id, dataToUpdate);
 
     return { status: 'SUCCESS', data: updatedMatch };
+  }
+
+  public async createMatch(dataToCreate: dataToCreateType):
+  Promise<ServiceResponse<IMatche | null>> {
+    // const { homeTeamId, awayTeamId } = dataToCreate;
+
+    // const validateTeamHome = await this.teamModel.findById(Number(homeTeamId));
+    // const validateTeamAway = await this.teamModel.findById(Number(awayTeamId));
+
+    // if (!validateTeamHome || !validateTeamAway) {
+    //   return { status: 'NOT_FOUND',
+    //     data: { message: `Team ${homeTeamId} or ${awayTeamId} not found` } };
+    // }
+
+    const createdMatch = await this.matchesModel.createMatch(dataToCreate);
+
+    return { status: 'CREATED', data: createdMatch };
   }
 }
