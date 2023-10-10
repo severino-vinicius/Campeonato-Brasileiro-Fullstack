@@ -8,7 +8,8 @@ export default class BoardController {
   ) {}
 
   public async getAllBoard(req: Request, res: Response) {
-    const serviceResponse = await this.boardService.getAllBoard();
+    const [,, path] = req.originalUrl.split('/');
+    const serviceResponse = await this.boardService.getAllBoard(path);
 
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }

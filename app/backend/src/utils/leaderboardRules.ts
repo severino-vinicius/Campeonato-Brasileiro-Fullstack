@@ -1,15 +1,6 @@
-import { businessType, leaderboardParam } from '../Interfaces/LeaderBoard/Leaderboard';
+import Leaderboard, { businessType, leaderboardParam } from '../Interfaces/LeaderBoard/Leaderboard';
 
-// function points(w: number, d: number): number {
-//   const wPoints = w * 3;
-//   const dPoints = d * 1;
-
-//   const totalPoints = wPoints + dPoints;
-
-//   return totalPoints;
-// }
-
-export default function businessRule(allMatchByTeams: leaderboardParam[]): Array<businessType> {
+export function businessHomeRule(allMatchByTeams: leaderboardParam[]): Array<businessType> {
   return allMatchByTeams.map((team) => ({
     name: team.teamName,
     totalGames: team.homeTeam.length,
@@ -25,6 +16,20 @@ export default function businessRule(allMatchByTeams: leaderboardParam[]): Array
     goalsBalance: team.homeTeam
       .reduce((total, match) => total + (match.homeTeamGoals - match.awayTeamGoals), 0),
   }));
+}
+
+export default function boardHomeEfficiency(allMatchByTeams: Leaderboard[]): Array<businessType> {
+  const boardWithoutTotal = businessHomeRule(allMatchByTeams as leaderboardParam[]);
+  const allBoardData = boardWithoutTotal.map((team) => {
+    const totalPoints = team.totalVictories * 3 + team.totalDraws;
+    const efficiency = (totalPoints / (team.totalGames * 3)) * 100;
+    return {
+      ...team,
+      totalPoints,
+      efficiency: efficiency.toFixed(2),
+    };
+  });
+  return allBoardData;
 }
 
 // name, totalPoints, totalGames, totalVictories, totalDraws, totalLosses, goalsFavor, goalsOwn goalsBalance, efficiency

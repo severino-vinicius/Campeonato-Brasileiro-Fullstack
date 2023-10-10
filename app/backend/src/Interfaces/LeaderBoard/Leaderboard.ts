@@ -16,6 +16,19 @@ export interface leaderboardParam extends Leaderboard {
   ],
 }
 
+export interface leaderboardAwayParam extends Leaderboard {
+  awayTeam: [
+    {
+      id: number,
+      homeTeamId: number,
+      homeTeamGoals: number,
+      awayTeamId: number,
+      awayTeamGoals: number,
+      inProgress: boolean
+    },
+  ],
+}
+
 export interface dataFromBoard extends businessType{
   totalPoints: number,
 }

@@ -9,7 +9,7 @@ export default class BoardModel implements ILeaderboardModel {
     private teamModel = TeamsModelSequelize,
   ) {}
 
-  async getAllBoard(): Promise<Leaderboard[] | leaderboardParam[]> {
+  async getAllBoardHome(): Promise<Leaderboard[] | leaderboardParam[]> {
     const atri = ['id', 'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'];
     const dbdata = await this.teamModel.findAll({
       include: [
@@ -20,7 +20,20 @@ export default class BoardModel implements ILeaderboardModel {
         },
       ],
     });
-    console.log(dbdata[0]);
+    return dbdata;
+  }
+
+  async getAllBoardAway(): Promise<Leaderboard[] | leaderboardParam[]> {
+    const atri = ['id', 'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'];
+    const dbdata = await this.teamModel.findAll({
+      include: [
+        {
+          model: this.matchModel,
+          as: 'awayTeam',
+          attributes: atri,
+        },
+      ],
+    });
     return dbdata;
   }
 }

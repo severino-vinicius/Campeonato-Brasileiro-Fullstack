@@ -1,5 +1,6 @@
 import Leaderboard, { leaderboardParam } from './Leaderboard';
 
 export type ILeaderboardModel = {
-  getAllBoard(): Promise<Leaderboard[] | leaderboardParam[]>
+  getAllBoardHome(): Promise<Leaderboard[] | leaderboardParam[]>
+  getAllBoardAway(): Promise<Leaderboard[] | leaderboardParam[]>
 };
