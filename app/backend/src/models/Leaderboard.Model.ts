@@ -9,28 +9,15 @@ export default class BoardModel implements ILeaderboardModel {
     private teamModel = TeamsModelSequelize,
   ) {}
 
-  async getAllBoardHome(): Promise<Leaderboard[] | leaderboardParam[]> {
+  async getAllBoard(path: string): Promise<Leaderboard[] | leaderboardParam[]> {
     const atri = ['id', 'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'];
     const dbdata = await this.teamModel.findAll({
       include: [
         {
           model: this.matchModel,
-          as: 'homeTeam',
+          as: `${path}Team`,
           attributes: atri,
-        },
-      ],
-    });
-    return dbdata;
-  }
-
-  async getAllBoardAway(): Promise<Leaderboard[] | leaderboardParam[]> {
-    const atri = ['id', 'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'];
-    const dbdata = await this.teamModel.findAll({
-      include: [
-        {
-          model: this.matchModel,
-          as: 'awayTeam',
-          attributes: atri,
+          where: { inProgress: false },
         },
       ],
     });

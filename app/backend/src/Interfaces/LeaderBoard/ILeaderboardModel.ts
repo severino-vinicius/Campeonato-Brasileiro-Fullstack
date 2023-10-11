@@ -1,6 +1,6 @@
-import Leaderboard, { leaderboardParam } from './Leaderboard';
+import { AllLeaderboard } from './LeadderboardInterface';
+// import Leaderboard, { leaderboardParam } from './Leaderboard';
 
 export type ILeaderboardModel = {
-  getAllBoardHome(): Promise<Leaderboard[] | leaderboardParam[]>
-  getAllBoardAway(): Promise<Leaderboard[] | leaderboardParam[]>
+  getAllBoard(path: string): Promise<AllLeaderboard[]>
 };

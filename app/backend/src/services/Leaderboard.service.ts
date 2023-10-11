@@ -1,27 +1,37 @@
 import BoardModel from '../models/Leaderboard.Model';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
-// import { dataFromBoard } from '../Interfaces/LeaderBoard/Leaderboard';
 import { ILeaderboardModel } from '../Interfaces/LeaderBoard/ILeaderboardModel';
-import boardHomeEfficiency from '../utils/leaderboardRules';
-import boardAwayEfficiency from '../utils/leaderboardAwayRules';
+import LeaderboardRules from '../utils/leaderboardRulesClass';
+import IMatche from '../Interfaces/Matches/Matche';
+import { businessType } from '../Interfaces/LeaderBoard/LeadderboardInterface';
 
 export default class BoardService {
   constructor(
     private boardModel: ILeaderboardModel = new BoardModel(),
   ) {}
 
-  public async getAllBoard(path: string): Promise<ServiceResponse<any>> {
-    if (path === 'home') {
-      const bdResponse = await this.boardModel.getAllBoardHome();
-      const matchAllData = boardHomeEfficiency(bdResponse);
-      return {
-        status: 'SUCCESS', data: matchAllData,
-      };
-    }
-    const bdResponse = await this.boardModel.getAllBoardAway();
-    const matchAllData = boardAwayEfficiency(bdResponse);
+  static orderedLeaderBoard(leaderBoard: businessType[]) {
+    const orderedLeaderBoard = leaderBoard
+      .sort((a, b) => b.goalsFavor - a.goalsFavor)
+      .sort((a, b) => b.goalsBalance - a.goalsBalance)
+      .sort((a, b) => b.totalPoints - a.totalPoints);
+    return orderedLeaderBoard;
+  }
+
+  public async getAllBoard(path: string): Promise<ServiceResponse<businessType[]>> {
+    const bdResponse = await this.boardModel.getAllBoard(path);
+    const dbResponseFormated = bdResponse.map((teamMatch) => {
+      const businessRules = new LeaderboardRules(teamMatch.teamName);
+      if (path === 'home' || path === 'away') {
+        const matches = path === 'home'
+          ? teamMatch.homeTeam : teamMatch.awayTeam;
+        return businessRules.startLeaderboard(path, matches as IMatche[]);
+      }
+      return businessRules.startLeaderboard(path, teamMatch.homeTeam as IMatche[]);
+    });
+    const teste = BoardService.orderedLeaderBoard(dbResponseFormated);
     return {
-      status: 'SUCCESS', data: matchAllData,
+      status: 'SUCCESS', data: teste,
     };
   }
 }
