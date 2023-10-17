@@ -29,9 +29,22 @@ export default class BoardService {
       }
       return businessRules.startLeaderboard(path, teamMatch.homeTeam as IMatche[]);
     });
-    const teste = BoardService.orderedLeaderBoard(dbResponseFormated);
+    const leaderboardFormated = BoardService.orderedLeaderBoard(dbResponseFormated);
     return {
-      status: 'SUCCESS', data: teste,
+      status: 'SUCCESS', data: leaderboardFormated,
+    };
+  }
+
+  public async getAllLeaderboard(): Promise<ServiceResponse<businessType[]>> {
+    const bdResponse = await this.boardModel.getAllLeaderboard();
+    const dbResponseFormated = bdResponse.map((teamMatch) => {
+      const businessRules = new LeaderboardRules(teamMatch.teamName);
+      return businessRules
+        .startHomeAwayLeaderboard(teamMatch.homeTeam as IMatche[], teamMatch.awayTeam as IMatche[]);
+    });
+    const leaderboardFormated = BoardService.orderedLeaderBoard(dbResponseFormated);
+    return {
+      status: 'SUCCESS', data: leaderboardFormated,
     };
   }
 }

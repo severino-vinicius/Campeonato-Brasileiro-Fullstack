@@ -23,4 +23,25 @@ export default class BoardModel implements ILeaderboardModel {
     });
     return dbdata;
   }
+
+  async getAllLeaderboard(): Promise<Leaderboard[] | leaderboardParam[]> {
+    const atri = ['id', 'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'];
+    const dbdata = await this.teamModel.findAll({
+      include: [
+        {
+          model: this.matchModel,
+          as: 'homeTeam',
+          attributes: atri,
+          where: { inProgress: false },
+        },
+        {
+          model: this.matchModel,
+          as: 'awayTeam',
+          attributes: atri,
+          where: { inProgress: false },
+        },
+      ],
+    });
+    return dbdata;
+  }
 }

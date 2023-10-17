@@ -3,4 +3,5 @@ import { AllLeaderboard } from './LeadderboardInterface';
 
 export type ILeaderboardModel = {
   getAllBoard(path: string): Promise<AllLeaderboard[]>
+  getAllLeaderboard(): Promise<AllLeaderboard[]>
 };

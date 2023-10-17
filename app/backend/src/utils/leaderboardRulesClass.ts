@@ -76,4 +76,20 @@ export default class LeaderboardRules {
     this.setBalance();
     return this.leaderboardStatus();
   }
+
+  public startHomeAwayLeaderboard(homeMatch: IMatche[], awayMatch: IMatche[]) {
+    homeMatch.forEach((team) => {
+      this.totalGames += 1;
+      const { homeTeamGoals, awayTeamGoals } = team;
+      return this.businessLeaderboardRules(homeTeamGoals, awayTeamGoals);
+    });
+    awayMatch.forEach((team) => {
+      this.totalGames += 1;
+      const { homeTeamGoals, awayTeamGoals } = team;
+      return this.businessLeaderboardRules(awayTeamGoals, homeTeamGoals);
+    });
+    this.setEfficiency();
+    this.setBalance();
+    return this.leaderboardStatus();
+  }
 }

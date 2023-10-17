@@ -13,4 +13,10 @@ export default class BoardController {
 
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
+
+  public async getAllLeaderboard(req: Request, res: Response) {
+    const serviceResponse = await this.boardService.getAllLeaderboard();
+
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  }
 }
